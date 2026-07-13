@@ -11,7 +11,7 @@ This document summarizes source-visible implementation and remaining verificatio
 | Brain lifecycle | Implemented; live rehearsal pending | PostgreSQL migration, activation, repair, and exactly-one-active constraints have dedicated tests and rehearsal commands; the current live rehearsals were not executed because no database password was configured |
 | Spreadsheet ingestion | Implemented | Bounded `.xlsx`, `.xlsm`, and `.xls` parsing preserves formulas and cached values without recalculation or macro execution |
 | Exact-byte patch planning | Implemented | The server verifies the latest durable workspace revision and returns an unauthorized, unexecuted plan from a strict full-file proposal |
-| Coding-request production path | Incomplete | The strict non-mutating route exists, but a generic existing-module request fails closed with `422` because generated ProgramGraph data lacks verified repair lineage; no successful production coding family is demonstrated |
+| Coding-request production path | Implemented, narrow | The strict non-mutating route has tested source-proven unused type-only import removal and official TypeScript LanguageService single-file fixes from exact durable snapshot bytes. An explicit exact `TS####`, `fixName:<id>`, or canonical `codeFixIdentity:<id>` selector must resolve to one candidate; there is no implicit selection. The source-observed direct `tsc` invocation must resolve an exact snapshot project config containing the requested file. Plans are unauthorized and unexecuted and require source-observed compiler/typecheck/test validation. Arbitrary feature synthesis, new targets, multi-file fixes, and compiler context beyond the snapshot plus TypeScript standard library remain unsupported |
 | Patch application | Implemented with trust boundary | Content hashes, compare-and-swap checks, explicit authorization, validation, rollback, and receipts are present |
 | Isolated validation | Implemented, local smoke only | Optional server-selected, digest-pinned Docker validation completed a local networkless live test; Docker daemon, operator, image supply chain, and host kernel remain trusted and no attestation or independent review follows |
 | VS Code client | Implemented, partial verification | A packaged VSIX was installed in an isolated VS Code 1.96.4 profile, activated, registered its commands, and reached readiness; visual layout, restart recovery, and a live patch round trip remain unverified |
@@ -49,9 +49,9 @@ optional Docker provider.
 ## Remaining work
 
 1. Fit and validate truth, contradiction, relation-potential, PowerWalk, selector, and surface parameters on representative disjoint datasets.
-2. Complete a production coding bridge that derives verifiable repair lineage, live
-   absence observations, and candidate-test linkage from trusted runtime state, then
-   execute and evaluate it on independently controlled repositories.
+2. Extend the bounded coding bridge beyond its tested unused-import and single-file
+   TypeScript LanguageService families, then execute and evaluate the supported paths
+   on independently controlled repositories.
 3. Independently review Docker deployment, dependency materialization, image provenance, and the remaining daemon/operator/host-kernel trust boundary.
 4. Exercise VS Code visual behavior, restart recovery, approval, and a live patch receipt in the packaged host.
 5. Reproduce build, tests, PostgreSQL lifecycle, adapter operation, and editor behavior on a clean independent machine.
