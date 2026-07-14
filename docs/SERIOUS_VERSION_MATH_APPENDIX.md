@@ -433,7 +433,57 @@ Acceptance:
 - Retrieval must return contradiction evidence when available.
 - Retrieval must support source-bound answers.
 - Retrieval must know when evidence is insufficient.
+- Missing positive evidence is not negative proof. A false-premise correction requires
+  contradiction, counterexample, or temporally earlier incompatible evidence.
 - Code retrieval must prefer source symbols, tests, configs, call paths, and build logs over README prose.
+
+Low support permits one bounded recovery transition:
+
+$$
+q_{\mathrm{low\ support}}
+\rightarrow
+\{\mathrm{learn},\mathrm{search},\mathrm{fetch}\}
+\rightarrow
+\mathrm{canonical\ typed\ ingest}
+\rightarrow
+\mathrm{replan}
+$$
+
+Fetched material has zero factual support mass until canonical ingestion binds source
+identity, evidence spans, and available temporal metadata. The transition is attempted
+at most once per turn; low support is not a final refusal and must not create an
+unbounded retrieval loop.
+
+After that attempt is exhausted, the current user policy authorizes a terminal creative
+candidate for a factual or reasoned turn only under this bounded admission rule:
+
+$$
+\begin{aligned}
+\operatorname{AdmitCreative}(c) ={}&
+\operatorname{RecoveryExhausted}
+\land \operatorname{ActivePriorContribution}(c) > 0 \\
+&\land \operatorname{NonRequestMaterial}(c) > 0
+\land \operatorname{NonEcho}(c) \\
+&\land \operatorname{RiskGate}(c)
+\land \operatorname{UnsupportedFactGate}(c)
+\end{aligned}
+$$
+
+An admitted terminal creative candidate satisfies:
+
+$$
+\operatorname{basis}(c)=\mathrm{invented},\qquad
+\operatorname{evidence}(c)=\varnothing,\qquad
+\operatorname{provenance}(c)=\mathrm{generated\_not\_evidence},\qquad
+\operatorname{certified}(c)=\mathrm{false}.
+$$
+
+`ActivePriorContribution` must come from learned graph or language state rather than
+the request surface. If connector, graph, and language state are all empty, the rule is
+false: no useful knowledge may be synthesized from hardcoded or fabricated text. The
+planner instead selects a non-assertive terminal answer limited to source-derived
+material that actually exists, and the Mouth realizes it. Creative continuation cannot establish a negative factual claim;
+contradiction or temporal proof remains required.
 
 ---
 
@@ -555,7 +605,9 @@ Acceptance:
 
 ## 9. Mouth: constrained semantic-to-surface realization
 
-The mouth solves a constrained generation problem. It must not decide truth.
+The Mouth solves a constrained semantic-to-surface generation problem. Its inputs are
+selected semantic values, relations, force, and evidence bindings. It must not decide
+truth or serialize role IDs, proof state, receipts, or trace controls as answer prose.
 
 For answer graph $A^*$, find surface text $y$:
 
@@ -608,6 +660,10 @@ Kneser-Ney must not introduce factual content.
 Acceptance:
 
 - Mouth improves fluency without adding facts.
+- Direct evidence wording is copied only for an explicit source-answer construct with
+  bound evidence; other modes use learned semantic realization.
+- An empty Mouth surface is an internal continuation signal for bounded recovery,
+  replanning, or terminal selection, not an admissible final response.
 - Entity/code/number preservation is tested.
 - Surface generation has traceable score terms.
 - Unsupported claims are detected before output.

@@ -87,11 +87,36 @@ actual train/validation split hash. Validation pairs are disjoint from fit pairs
 zero-context nodes do not receive a hash-vector substitute. The learned representation
 is consumed in production through query-conditioned cosine expansion into field seeds.
 
-The current expansion threshold and scale are engineering parameters, not calibrated
-probabilities. Representative outcome-based fitting, drift criteria, and durable
-incremental state loading remain open.
+PowerWalk transition parameters have three distinct roles. The graph-statistics
+bootstrap from `initializePowerWalkParameters` is deterministic initialization and is
+not fitted or calibrated. `fitPowerWalkParameters` accepts caller-supplied typed
+transition choices carrying source-record identity, splits whole source records between
+fit and holdout, and fits bounded `p`, `q`, and temporal-decay `lambda` coordinates by
+multinomial negative log likelihood in log space. It publishes the fitted candidate as
+`activeParameters` only when fit mean NLL improves and the untouched holdout improves
+by more than the configured threshold; otherwise the initialized parameters remain
+active. The audit keeps initialized, fitted-candidate, and published values separate.
+
+This acceptance result is limited to the supplied source-disjoint transition records.
+It is not probability calibration or evidence that the observations are representative.
+The current expansion threshold and scale remain engineering parameters. Representative
+outcome review, drift criteria, and durable incremental state loading remain open.
 
 ## Spectral, Diffusion, And Flow Operators
+
+The forecast path fits candidate VAR orders on a common estimation window and selects
+conditional multivariate-Gaussian AIC. Its parameter count includes
+`d(1 + d*p)` regression coefficients and `d(d + 1)/2` free innovation-covariance
+parameters. Covariance log determinants use adaptive-jitter Cholesky diagnostics.
+When observations or residual degrees of freedom are insufficient, the model reports
+`fitStatus: "cold_start"` with a reason and uses a random-walk-with-drift construction;
+it does not report a fitted finite-AIC model.
+Stability is computed from the full `d*p` companion matrix by a shifted real QR path
+that retains 1x1 and 2x2 real-Schur blocks; if QR does not converge, the trace degrades
+to a labeled matrix-infinity-norm upper bound rather than reporting an eigenvalue result.
+For horizon `h`, forecast covariance is the unscaled Wold sum from `Psi_0` through
+`Psi_(h-1)`. Reported 95 percent Gaussian intervals are explicitly uncalibrated and do
+not establish forecast coverage.
 
 Bounded symmetric Laplacian partitions use a Jacobi eigendecomposition. The output
 reports the second-smallest eigenvalue as algebraic connectivity, the difference
@@ -158,6 +183,13 @@ operators. The shipped requirement and operator coefficient models are versioned
 `uncalibrated_bootstrap` values. Their sigmoid outputs are activation estimates, not
 probabilities of task success and not evidence that an English lexical router was
 replaced by a trained representative model.
+
+`request-authority.ts` provides the shared source-neutral projection from that field to
+factual, reasoned, creative, translation, program, or action authority. The kernel and
+`createSourceOnlyScceRuntime` use the same projection and operator-support helpers.
+Projection scores are bounded, uncalibrated routing energies. A caller-supplied
+structured authority is recorded as an explicit override; it is not inferred from
+surface keywords.
 
 `cognitive-planner.ts` scores reasoning and invention quality and performs bounded
 MMR proposal selection. `candidate.ts` and `judge.ts` then combine requirement fit,

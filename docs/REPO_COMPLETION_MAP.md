@@ -8,10 +8,11 @@ This document summarizes source-visible implementation and remaining verificatio
 |---|---|---|
 | Core turn path | Implemented, provisional quality | Requirement field, cognitive operators, proposals, claim bases, candidate selection, Mouth realization, and bounded revision use one kernel path; checked-in coefficients are bootstrap or provisional |
 | Evidence and proof | Implemented | Source identity, byte ranges, proof state, contradiction state, and answer traces are present; representative answer-quality review remains incomplete |
-| Brain lifecycle | Implemented; live rehearsal pending | PostgreSQL migration, activation, repair, and exactly-one-active constraints have dedicated tests and rehearsal commands; the current live rehearsals were not executed because no database password was configured |
+| Low-support recovery | Implemented, bounded | An under-supported turn gets one learn/search/fetch, canonical-ingest, and replan transition. Search results do not become evidence before typed ingestion; an empty Mouth surface is an internal continuation signal rather than a final response |
+| Brain lifecycle | Implemented; live rehearsal environment-dependent | PostgreSQL migration, activation, repair, and exactly-one-active constraints have dedicated tests and rehearsal commands; live results require a valid configured database URL |
 | Spreadsheet ingestion | Implemented | Bounded `.xlsx`, `.xlsm`, and `.xls` parsing preserves formulas and cached values without recalculation or macro execution |
 | Exact-byte patch planning | Implemented | The server verifies the latest durable workspace revision and returns an unauthorized, unexecuted plan from a strict full-file proposal |
-| Coding-request production path | Implemented, narrow | The strict non-mutating route has tested source-proven unused type-only import removal and official TypeScript LanguageService single-file fixes from exact durable snapshot bytes. An explicit exact `TS####`, `fixName:<id>`, or canonical `codeFixIdentity:<id>` selector must resolve to one candidate; there is no implicit selection. The source-observed direct `tsc` invocation must resolve an exact snapshot project config containing the requested file. Plans are unauthorized and unexecuted and require source-observed compiler/typecheck/test validation. Arbitrary feature synthesis, new targets, multi-file fixes, and compiler context beyond the snapshot plus TypeScript standard library remain unsupported |
+| Coding-request production path | Implemented, narrow | The strict non-mutating route has tested source-proven unused type-only import removal and official TypeScript LanguageService actions from exact durable snapshot bytes. An explicit exact `TS####`, `fixName:<id>`, or canonical `codeFixIdentity:<id>` selector must resolve to one action rooted at the sole requested existing TypeScript file; there is no implicit selection. The complete action may close over up to 32 affected files and 128 exact text changes, including bounded TypeScript/JavaScript creation under existing workspace directories. The source-observed direct `tsc` invocation must resolve an exact snapshot project config containing the requested file. Plans are unauthorized and unexecuted and require source-observed compiler/typecheck/test validation. Command-bearing actions, paths outside the workspace, stale or absent replacement bases, creation outside existing directories, arbitrary feature synthesis, and compiler context beyond the snapshot plus TypeScript standard library remain unsupported |
 | Patch application | Implemented with trust boundary | Content hashes, compare-and-swap checks, explicit authorization, validation, rollback, and receipts are present |
 | Isolated validation | Implemented, local smoke only | Optional server-selected, digest-pinned Docker validation completed a local networkless live test; Docker daemon, operator, image supply chain, and host kernel remain trusted and no attestation or independent review follows |
 | VS Code client | Implemented, partial verification | A packaged VSIX was installed in an isolated VS Code 1.96.4 profile, activated, registered its commands, and reached readiness; visual layout, restart recovery, and a live patch round trip remain unverified |
@@ -25,9 +26,13 @@ This document summarizes source-visible implementation and remaining verificatio
 - One production kernel path for ingestion, graph activation, proof-aware selection, realization, and trace emission.
 - Unicode-safe byte and character evidence spans with exact citation verification.
 - Separate support and contradiction records; the Mouth cannot create evidence after selection.
+- Source-backed contradiction and temporal ordering can defeat a false premise; absence of positive support alone does not prove a negative.
+- Creative authority permits invented proposals without promoting them to factual certification.
 - Durable events for requirements, operators, proposals, selected candidates, Mouth state, and revision outcomes.
-- Versioned evaluation conditions with isolated cache identity and trace verification.
 - Source-neutral relation features and optional content-addressed calibration models with explicit unconfigured fallback.
+- Shared source-neutral requirement-field projection for factual, reasoned, creative, translation, program, and action authority; projection scores remain uncalibrated routing energies.
+- Conditional-Gaussian VAR order selection on a common estimation window, companion-matrix stability diagnostics, and horizon-specific Wold covariance with explicitly uncalibrated Gaussian intervals.
+- Distinct PowerWalk initializer, optimizer candidate, and active parameter sets; fitted parameters are published only after fit and source-record-disjoint holdout NLL improve on caller-supplied transition observations.
 - Workspace revision snapshots whose operation bytes and before/after identities are hashed into a deterministic plan.
 
 ## Verification commands
@@ -41,23 +46,24 @@ pnpm rehearsal:adapter
 git diff --check
 ```
 
-The database rehearsals require a configured PostgreSQL password. They remain
-unexecuted in the current release record because that credential was not configured.
+The database rehearsals require a valid PostgreSQL URL. `SCCE_DATABASE_URL` can supply
+that URL without storing the credential in `scce.config.json`.
 `pnpm validate` does not execute the protected public-review procedure or select the
 optional Docker provider.
 
 ## Remaining work
 
-1. Fit and validate truth, contradiction, relation-potential, PowerWalk, selector, and surface parameters on representative disjoint datasets.
-2. Extend the bounded coding bridge beyond its tested unused-import and single-file
-   TypeScript LanguageService families, then execute and evaluate the supported paths
+1. Fit and validate truth, contradiction, relation-potential, PowerWalk, selector, and
+   surface parameters on representative disjoint datasets. The implemented PowerWalk
+   source-disjoint acceptance gate is not representative calibration by itself.
+2. Extend the bounded coding bridge beyond its tested unused-import and selected
+   TypeScript LanguageService action families, then execute and evaluate the supported paths
    on independently controlled repositories.
 3. Independently review Docker deployment, dependency materialization, image provenance, and the remaining daemon/operator/host-kernel trust boundary.
 4. Exercise VS Code visual behavior, restart recovery, approval, and a live patch receipt in the packaged host.
 5. Reproduce build, tests, PostgreSQL lifecycle, adapter operation, and editor behavior on a clean independent machine.
 6. Supply representative calibration and load datasets, then run realistic long-duration, multilingual, code-repair, and broad answer-quality reviews.
-7. Execute the procedure in [`PUBLIC_REVIEW_CONTRACT.md`](PUBLIC_REVIEW_CONTRACT.md) with independently controlled protected inputs.
 
 ## Claim boundary
 
-Source inspection and local checks support only the specific contracts they exercise. They do not establish general runtime quality, production safety for untrusted code, clean-machine reproducibility, or completion of the public-review procedure.
+Source inspection and local checks support only the specific contracts they exercise. They do not establish general runtime quality, production safety for untrusted code, or clean-machine reproducibility.
